@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101713">
+  <title>NOVA CLUB — Tu tiempo tiene valor</title>
+  <style>
+    :root{--bg:#0c120e;--panel:#151f18;--panel2:#1d2a21;--green:#39dc88;--muted:#a8b9ad;--line:#2a3a30;--white:#f4faf5}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--white);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    button{font:inherit;cursor:pointer} .wrap{max-width:980px;margin:auto;padding:18px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0 22px}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:.08em}.logo{width:42px;height:42px;border-radius:13px;background:var(--green);color:#07130c;display:grid;place-items:center;font-size:24px;font-weight:900}
+    .tag{font-size:11px;color:var(--muted);letter-spacing:.13em}.pill{border:1px solid #286746;color:var(--green);padding:5px 10px;border-radius:99px;font-size:12px}
+    .hero{background:linear-gradient(135deg,#17271d,#101713 65%);border:1px solid var(--line);border-radius:24px;padding:26px;margin-bottom:18px}
+    h1{font-size:clamp(28px,6vw,44px);line-height:1.08;margin:12px 0}.hero p{color:var(--muted);max-width:600px}
+    .nav{display:flex;gap:8px;overflow:auto;padding:5px 0 16px}.nav button{white-space:nowrap;background:var(--panel);border:1px solid var(--line);color:var(--muted);padding:10px 14px;border-radius:12px}
+    .nav button.active{background:#1d3829;border-color:#287b4d;color:var(--green)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:17px}
+    .stat{font-size:27px;font-weight:800;margin-top:5px}.muted{color:var(--muted)}.small{font-size:12px}.section-title{font-size:20px;margin:8px 0 13px}
+    .task{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.task h3{margin:0 0 4px;font-size:16px}.reward{color:var(--green);font-weight:800;white-space:nowrap}
+    .btn{border:0;background:var(--green);color:#07130c;font-weight:800;padding:11px 15px;border-radius:12px}.btn.secondary{background:var(--panel2);color:var(--green);border:1px solid #286746}
+    .notice{border:1px solid #66552a;background:#2b2515;color:#f3d99a;padding:12px 14px;border-radius:13px;margin:14px 0;font-size:13px}
+    .hidden{display:none}.footer{color:var(--muted);font-size:12px;padding:25px 2px}
+    .bar{height:8px;border-radius:99px;background:#26352b;overflow:hidden;margin-top:10px}.bar span{display:block;height:100%;width:20%;background:var(--green)}
+    @media(max-width:600px){.wrap{padding:14px}.grid{grid-template-columns:1fr}.hero{padding:21px}.task{flex-direction:column}.task .btn{width:100%}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><div class="logo">N</div><div>NOVA CLUB<div class="tag">OPORTUNIDADES DIGITALES</div></div></div>
+    <span class="pill">COLOMBIA</span>
+  </header>
+
+  <section class="hero">
+    <span class="pill">REGISTRO GRATUITO</span>
+    <h1>Tu tiempo también<br>tiene valor.</h1>
+    <p>Una comunidad para realizar actividades digitales remuneradas y conectar empresas con personas que aportan su talento.</p>
+    <button class="btn" onclick="showTab('tareas')">Explorar actividades</button>
+  </section>
+
+  <nav class="nav" aria-label="Secciones">
+    <button class="active" data-tab="inicio" onclick="showTab('inicio')">Inicio</button>
+    <button data-tab="tareas" onclick="showTab('tareas')">Actividades</button>
+    <button data-tab="referidos" onclick="showTab('referidos')">Referidos</button>
+    <button data-tab="billetera" onclick="showTab('billetera')">Billetera</button>
+    <button data-tab="admin" onclick="showTab('admin')">Administración</button>
+  </nav>
+
+  <main>
+    <section id="inicio" class="view">
+      <h2 class="section-title">Panel de participante</h2>
+      <div class="grid">
+        <div class="card"><div class="muted small">Saldo disponible</div><div class="stat">$0 COP</div><div class="small muted">Demostración</div></div>
+        <div class="card"><div class="muted small">Actividades aprobadas</div><div class="stat">0</div><div class="small muted">Todavía no hay tareas reales</div></div>
+      </div>
+      <div class="notice">Esta es una maqueta inicial. No crea cuentas, no recibe dinero y no procesa pagos ni retiros.</div>
+      <div class="card"><h3>¿Cómo funcionará?</h3><p class="muted">1. Una empresa contrata y financia un proyecto.<br>2. NOVA CLUB publica las actividades y sus condiciones.<br>3. Los participantes entregan el trabajo.<br>4. Se revisa la calidad y se registra el pago correspondiente.</p></div>
+    </section>
+
+    <section id="tareas" class="view hidden">
+      <h2 class="section-title">Actividades de ejemplo</h2>
+      <div class="notice">Las siguientes tareas y remuneraciones son ficticias para mostrar el diseño. No están disponibles para realizar ni generan ganancias.</div>
+      <div class="card task"><div><h3>Encuesta de opinión</h3><div class="muted small">Responder preguntas de investigación · 8 minutos</div></div><div class="reward">$2.000 COP</div></div><br>
+      <div class="card task"><div><h3>Clasificación de fotografías</h3><div class="muted small">Etiquetar imágenes siguiendo instrucciones · 12 minutos</div></div><div class="reward">$3.000 COP</div></div><br>
+      <div class="card task"><div><h3>Transcripción breve</h3><div class="muted small">Transcribir un audio corto · 15 minutos</div></div><div class="reward">$5.000 COP</div></div>
+    </section>
+
+    <section id="referidos" class="view hidden">
+      <h2 class="section-title">Programa de referidos</h2>
+      <div class="card"><div class="muted small">Comisiones aprobadas</div><div class="stat">$0 COP</div><p class="muted">Las comisiones solo se generarán cuando un referido consiga una venta o cliente real, pagado y validado. No se paga por reclutar personas ni por cuotas de inscripción.</p></div>
+      <div class="notice">El enlace personal se activará cuando exista el registro real de usuarios y el sistema de atribución de clientes.</div>
+    </section>
+
+    <section id="billetera" class="view hidden">
+      <h2 class="section-title">Mi billetera</h2>
+      <div class="card"><div class="muted small">Saldo disponible</div><div class="stat">$0 COP</div><div class="bar"><span></span></div><p class="muted small">Retiro mínimo propuesto: $10.000 COP por Nequi. Se habilitará cuando exista un proveedor de pagos y fondos reales disponibles.</p></div>
+    </section>
+
+    <section id="admin" class="view hidden">
+      <h2 class="section-title">Panel de administración</h2>
+      <div class="notice">Vista de demostración. El acceso administrativo real deberá protegerse con autenticación y permisos; esta página pública no debe usarse para administrar datos reales.</div>
+      <div class="grid">
+        <div class="card"><div class="muted small">Clientes</div><div class="stat">0</div></div>
+        <div class="card"><div class="muted small">Tareas pendientes</div><div class="stat">0</div></div>
+        <div class="card"><div class="muted small">Entregas por revisar</div><div class="stat">0</div></div>
+        <div class="card"><div class="muted small">Retiros por revisar</div><div class="stat">0</div></div>
+      </div>
+    </section>
+  </main>
+  <div class="footer">NOVA CLUB · Prototipo de diseño · No es una plataforma de pagos ni una oferta de inversión.</div>
+</div>
+<script>
+function showTab(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('hidden',v.id!==id));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
