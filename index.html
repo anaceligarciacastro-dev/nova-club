@@ -84,10 +84,10 @@ body{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;margin:0}
 <div class="card" id="workerApplyCard"><h2>Quiero trabajar en NOVA CLUB</h2><p class="muted">Cuéntanos qué sabes hacer. Tu postulación será revisada por el equipo de NOVA CLUB; enviarla no garantiza una contratación ni un pago.</p><form id="workerApplyForm"><label for="workerName">Nombre completo</label><input id="workerName" maxlength="100" placeholder="Tu nombre completo" required=""/><label for="workerCountry">País</label><input id="workerCountry" maxlength="80" placeholder="País donde vives" required=""/><label for="workerPhone">WhatsApp (con código de país)</label><input id="workerPhone" maxlength="30" placeholder="Ej. +57 300 000 0000"/><label for="workerSkills">¿Qué tareas puedes realizar?</label><textarea id="workerSkills" maxlength="1200" placeholder="Ej. organizar catálogos, registrar datos, ordenar fotografías, manejar hojas de cálculo..." required=""></textarea><label for="workerExperience">Experiencia (opcional)</label><textarea id="workerExperience" maxlength="1000" placeholder="Cuéntanos si ya has realizado trabajos similares."></textarea><button class="btn" id="workerApplySubmit" type="submit">Enviar postulación</button></form><div class="status" id="workerApplyMessage" role="status"></div></div>
 <div class="status" id="accountMessage" role="status"></div><section class="card hidden" id="adminPanel"><div class="actions" style="justify-content:space-between;align-items:center"><h2>Administración privada</h2><button class="btn secondary" id="refreshAdmin" type="button">Actualizar</button></div><p class="small muted">Solo visible para la cuenta autorizada. Revisa cada solicitud antes de decidir.</p><div class="status" id="adminMessage" role="status"></div><h3>Pedidos de clientes</h3><p class="small muted">Solicitudes recibidas desde el formulario público.</p><div id="clientOrders"><p class="muted">Los pedidos aparecerán aquí.</p></div><h3>Postulaciones para trabajar</h3><p class="small muted">Personas que desean colaborar con NOVA CLUB.</p><div id="workerApplications"><p class="muted">Cargando postulaciones...</p></div><h3>Solicitudes de participantes</h3><div id="adminRequests"><p class="muted">Comprobando permisos...</p></div></section></section></section><section class="app-screen" id="screen-bank">
 <div class="bank-head"><div><div class="bank-kicker">TU DINERO, BAJO CONTROL</div><div class="screen-heading">Mi banco</div><p class="screen-intro">Consulta tus ingresos, retiros y movimientos de NOVA CLUB.</p></div><span class="bank-emblem">$</span></div>
-<section class="card bank-balance"><div class="bank-balance-top"><span>Saldo disponible</span><span class="bank-secure">● Cuenta segura</span></div><div class="bank-amount">$ 0 <small>COP</small></div><p class="bank-balance-note">Tu saldo se actualizará con movimientos confirmados.</p><div class="bank-balance-foot"><span> billetera NOVA CLUB</span><span>•••• 2026</span></div></section>
-<div class="bank-summary-grid"><article class="bank-summary-card"><span class="bank-summary-icon">↙</span><span class="bank-summary-label">Ingresos</span><strong>—</strong><small>Confirmados</small></article><article class="bank-summary-card"><span class="bank-summary-icon">↗</span><span class="bank-summary-label">Retiros</span><strong>—</strong><small>Realizados</small></article></div>
-<section class="card bank-section"><div class="bank-section-title"><h2>Últimos movimientos</h2><span>ACTIVIDAD</span></div><div id="bankMovements" class="bank-empty"><span class="bank-empty-icon">↔</span><strong>Aún no tienes movimientos</strong><p class="small muted">Cuando recibas un ingreso o se confirme un retiro, aparecerá aquí.</p></div></section>
-<section class="card bank-section"><div class="bank-section-title"><h2>Solicitudes de retiro</h2><span>RETIROS</span></div><p class="muted small">Podrás consultar aquí tus solicitudes y su estado: pendiente, aprobada o pagada.</p><button class="bank-withdraw" type="button" disabled>Solicitar retiro <span>Próximamente</span></button></section>
+<section class="card bank-balance"><div class="bank-balance-top"><span>Saldo disponible</span><span class="bank-secure">● Datos de Supabase</span></div><div class="bank-amount" id="bankBalance">— <small>COP</small></div><p class="bank-balance-note">Calculado con movimientos registrados en tu cuenta.</p><div class="bank-balance-foot"><span>billetera NOVA CLUB</span><span>Saldo en COP</span></div></section>
+<div class="bank-summary-grid"><article class="bank-summary-card"><span class="bank-summary-icon">↙</span><span class="bank-summary-label">Ingresos</span><strong id="bankIncome">—</strong><small>Movimientos confirmados</small></article><article class="bank-summary-card"><span class="bank-summary-icon">↗</span><span class="bank-summary-label">Retiros</span><strong id="bankWithdrawals">—</strong><small>Movimientos registrados</small></article></div>
+<section class="card bank-section"><div class="bank-section-title"><h2>Últimos movimientos</h2><span>ACTIVIDAD</span></div><div id="bankMovements" class="bank-empty"><span class="bank-empty-icon">↔</span><strong>Inicia sesión para consultar tus movimientos</strong><p class="small muted">Aquí aparecerán los ingresos, retiros y ajustes registrados en tu cuenta.</p></div></section>
+<section class="card bank-section"><div class="bank-section-title"><h2>Solicitudes de retiro</h2><span>RETIROS</span></div><div id="bankRequests" class="bank-empty"><p class="small muted">Inicia sesión para consultar tus solicitudes.</p></div><button class="bank-withdraw" type="button" disabled>Solicitar retiro <span>En preparación segura</span></button></section>
 <section class="card bank-section bank-nequi"><div class="bank-nequi-icon">N</div><div><strong>Cuenta para recibir pagos</strong><p class="small muted">La vinculación de Nequi estará disponible cuando se habiliten los retiros seguros.</p></div></section>
 <div class="notice bank-notice">Por ahora esta billetera es informativa. No se realizan transferencias ni se muestran ganancias hasta que cada movimiento haya sido verificado.</div><div class="status" id="bankMessage" role="status"></div></section></main><nav aria-label="Navegación principal" class="bottom-nav"><button class="bottom-item selected" data-tab="home"><span class="bottom-icon">⌂</span><small>Inicio</small></button><button class="bottom-item" data-tab="orders"><span class="bottom-icon">▣</span><small>Pedidos</small></button><button class="bottom-item" data-tab="support"><span class="bottom-icon">＋</span><small>Pedir</small></button><button class="bottom-item" data-tab="services"><span class="bottom-icon">◉</span><small>Servicios</small></button><button class="bottom-item" data-tab="account"><span class="bottom-icon">♙</span><small>Mi cuenta</small></button><button class="bottom-item" data-tab="bank"><span class="bottom-icon">▣</span><small>Mi banco</small></button></nav>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -320,6 +320,75 @@ function showScreen(name){
   document.querySelectorAll('.bottom-item').forEach(button=>{
     button.classList.toggle('selected', button.dataset.tab === name);
   });
+  if(name === 'bank') loadBankData();
+}
+
+function formatCOP(value){
+  return Number(value||0).toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});
+}
+function bankNotice(message,isError=false){
+  const el=$('bankMessage'); if(!el)return;
+  el.textContent=message; el.className='status'+(isError?' error':''); el.style.display='block';
+}
+async function loadBankData(){
+  const box=$('bankMovements'), requests=$('bankRequests');
+  if(!client || !currentUser){
+    $('bankBalance').innerHTML='— <small>COP</small>';
+    $('bankIncome').textContent='—'; $('bankWithdrawals').textContent='—';
+    if(box) box.innerHTML='<strong>Inicia sesión para consultar tus movimientos</strong><p class="small muted">Tus datos financieros son privados.</p>';
+    if(requests) requests.textContent='Inicia sesión para consultar tus solicitudes.';
+    return;
+  }
+  if(box) box.textContent='Consultando movimientos...';
+  if(requests) requests.textContent='Consultando solicitudes...';
+  try{
+    const [movementResult,withdrawalResult]=await Promise.all([
+      client.from('movimientos').select('id,tipo,monto_cop,descripcion,creado_en').eq('usuario_id',currentUser.id).order('creado_en',{ascending:false}).limit(50),
+      client.from('retiros').select('id,monto_cop,medio,estado,solicitado_en').eq('usuario_id',currentUser.id).order('solicitado_en',{ascending:false}).limit(30)
+    ]);
+    if(movementResult.error) throw new Error('Movimientos: '+movementResult.error.message);
+    if(withdrawalResult.error) throw new Error('Retiros: '+withdrawalResult.error.message);
+    const movements=movementResult.data||[], withdrawals=withdrawalResult.data||[];
+    const income=movements.filter(x=>x.tipo==='ganancia').reduce((a,x)=>a+Number(x.monto_cop||0),0);
+    const withdrawn=movements.filter(x=>x.tipo==='retiro').reduce((a,x)=>a+Number(x.monto_cop||0),0);
+    // Los ajustes se muestran en el historial, pero no se suman hasta definir su signo contable.
+    const balance=income-withdrawn;
+    $('bankBalance').innerHTML=formatCOP(balance)+' <small>COP</small>';
+    $('bankIncome').textContent=formatCOP(income);
+    $('bankWithdrawals').textContent=formatCOP(withdrawn);
+    if(box){
+      box.innerHTML='';
+      if(!movements.length){box.className='bank-empty';box.innerHTML='<span class="bank-empty-icon">↔</span><strong>Aún no tienes movimientos</strong><p class="small muted">Cuando exista un movimiento confirmado, aparecerá aquí.</p>';}
+      else{
+        box.className='';
+        movements.forEach(item=>{
+          const row=document.createElement('article'); row.className='admin-row';
+          const title=document.createElement('strong'); title.textContent=(item.tipo||'Movimiento').replace(/^./,c=>c.toUpperCase());
+          const detail=document.createElement('p'); detail.className='small muted'; detail.textContent=(item.descripcion||'Movimiento de NOVA CLUB')+' · '+(item.creado_en?new Date(item.creado_en).toLocaleString('es-CO'):'');
+          const amount=document.createElement('strong'); amount.textContent=(item.tipo==='retiro'?'−':item.tipo==='ajuste'?'±':'+')+formatCOP(item.monto_cop);
+          row.append(title,detail,amount); box.append(row);
+        });
+      }
+    }
+    if(requests){
+      requests.innerHTML='';
+      if(!withdrawals.length){requests.className='bank-empty';requests.textContent='Aún no tienes solicitudes de retiro.';}
+      else{
+        requests.className='';
+        withdrawals.forEach(item=>{
+          const row=document.createElement('article');row.className='admin-row';
+          const title=document.createElement('strong');title.textContent=formatCOP(item.monto_cop);
+          const detail=document.createElement('p');detail.className='small muted';detail.textContent=(item.medio||'Medio no especificado')+' · Estado: '+item.estado+' · '+(item.solicitado_en?new Date(item.solicitado_en).toLocaleString('es-CO'):'');
+          row.append(title,detail);requests.append(row);
+        });
+      }
+    }
+    bankNotice('Información cargada desde tus registros de Supabase. El saldo no representa dinero transferido a Nequi.');
+  }catch(error){
+    if(box) box.textContent='No fue posible cargar tus movimientos.';
+    if(requests) requests.textContent='No fue posible cargar tus solicitudes.';
+    bankNotice(error.message||'Error al consultar Mi banco.',true);
+  }
 }
 
 async function openAccountScreen(){
