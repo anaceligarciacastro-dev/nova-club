@@ -91,7 +91,7 @@ document.querySelectorAll('.main-nav a').forEach(a=>a.addEventListener('click',(
 $('authForm').onsubmit=async e=>{e.preventDefault();if(!configured){msg('Falta insertar la clave publicable de Supabase en este archivo.',true);return}let email=$('email').value.trim(),password=$('password').value;$('submitAuth').disabled=true;try{if(mode==='signup'){let nombre=$('name').value.trim();if(!nombre){msg('Escribe tu nombre.',true);return}let {data,error}=await client.auth.signUp({email,password,options:{data:{nombre}}});if(error)throw error;if(data.session)await loadAccount(data.session.user);else msg('Cuenta creada. Revisa tu correo y confirma la dirección antes de iniciar sesión.')}else{let {data,error}=await client.auth.signInWithPassword({email,password});if(error)throw error;await loadAccount(data.user)}}catch(err){msg(err.message||'No fue posible completar el acceso.',true)}finally{$('submitAuth').disabled=false}};
 async function loadAccount(user){$('auth').classList.add('hidden');$('account').classList.remove('hidden');$('welcome').textContent='Hola, '+(user.user_metadata?.nombre||'participante');$('profileEmail').textContent=user.email||'';await loadTasks();await loadMyWorkerApplication();await checkAdmin()}
 async function loadTasks(){let box=$('tasks');box.textContent='Cargando actividades...';let {data,error}=await client.from('actividades').select('id,titulo,descripcion,recompensa_cop').eq('activa',true).order('creada_en',{ascending:false});if(error){box.textContent='No pudimos cargar las actividades. Intenta nuevamente.';return}if(!data?.length){box.textContent='Todavía no hay actividades disponibles. Cuando NOVA CLUB publique trabajos reales financiados por clientes, aparecerán aquí.';return}box.innerHTML='';for(let t of data){let a=document.createElement('article');a.className='card task';let d=document.createElement('div'),h=document.createElement('h3'),p=document.createElement('p');h.textContent=t.titulo;p.className='small muted';p.textContent=t.descripcion||'Consulta las instrucciones antes de participar.';d.append(h,p);let r=document.createElement('div'),v=document.createElement('div'),b=document.createElement('button');v.className='reward';v.textContent=Number(t.recompensa_cop||0).toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});b.className='btn secondary';b.textContent='Enviar interés';b.onclick=()=>submitTask(t.id,b);r.append(v,b);a.append(d,r);box.append(a)}}
-async function submitTask(id,b){b.disabled=true;try{let {data:{user}}=await client.auth.getUser();let {error}=await client.from('entregas').insert({usuario_id:user.id,actividad_id:id,estado:'pendiente'});if(error)throw error;msg('Tu solicitud quedó registrada para revisión. No genera un pago automático.',false,'accountMessage');b.textContent='Solicitud enviada'}catch(e){msg(e.message||'No se pudo enviar la solicitud.',true,'accountMessage');b.disabled=false}}async function checkAdmin(){const panel=$('adminPanel');panel.classList.add('hidden');const {data,error}=await client.rpc('es_administrador');if(error||data!==true)return;panel.classList.remove('hidden');await loadClientOrders();await loadWorkerApplications();await loadAdminRequests()}
+async function submitTask(id,b){b.disabled=true;try{let {data:{user}}=await client.auth.getUser();let {error}=await client.from('entregas').insert({usuario_id:user.id,actividad_id:id,estado:'pendiente'});if(error)throw error;msg('Tu solicitud quedó registrada para revisión. No genera un pago automático.',false,'accountMessage');b.textContent='Solicitud enviada'}catch(e){msg(e.message||'No se pudo enviar la solicitud.',true,'accountMessage');b.disabled=false}}async function checkAdmin(){const panel=$('adminPanel');panel.classList.add('hidden');const {data,error}=await client.rpc('es_administrador');if(error){adminMsg('No se pudo verificar el permiso de administrador: '+(error.message||'error de Supabase'),true);return}if(data!==true){adminMsg('La sesión está activa, pero esta cuenta no tiene permisos de administrador.',true);return}panel.classList.remove('hidden');await loadClientOrders();await loadWorkerApplications();await loadAdminRequests()}
 
 async function loadClientOrders(){
  const box=$('clientOrders');box.textContent='Cargando pedidos...';
@@ -206,6 +206,28 @@ function showScreen(name){
  if(name==='orders' && !document.querySelector('#account:not(.hidden)')) { document.querySelector('#screen-orders .screen-intro').textContent='Inicia sesión para consultar tus actividades y solicitudes.'; }
 }
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.tab)));
+// Mi cuenta: consultar la sesión guardada antes de decidir qué mostrar.
+const accountTab=document.querySelector('[data-tab="account"]');
+accountTab.addEventListener('click',async()=>{
+  showScreen('account');
+  if(!client){$('account').classList.add('hidden');$('auth').classList.remove('hidden');return;}
+  try{
+    const {data,error}=await client.auth.getSession();
+    if(error) throw error;
+    if(data.session?.user){
+      await loadAccount(data.session.user);
+      $('auth').classList.add('hidden');
+      $('account').classList.remove('hidden');
+    }else{
+      $('account').classList.add('hidden');
+      $('auth').classList.remove('hidden');
+    }
+  }catch(err){
+    $('account').classList.add('hidden');
+    $('auth').classList.remove('hidden');
+    msg('No pudimos recuperar tu sesión: '+(err.message||'intenta iniciar sesión nuevamente.'),true);
+  }
+});
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.go)));
 document.querySelectorAll('[data-auth]').forEach(b=>b.addEventListener('click',()=>{showScreen('account');document.querySelector('#auth').classList.remove('hidden');setMode(b.dataset.auth)}));
 document.querySelectorAll('.service-cta').forEach(b=>b.addEventListener('click',()=>{document.querySelector('#serviceType').value=b.dataset.service;showScreen('support')}));
