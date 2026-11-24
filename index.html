@@ -128,7 +128,7 @@ async function submitTask(id,b){b.disabled=true;try{let {data:{user}}=await clie
 
 async function loadClientOrders(){
  const box=$('clientOrders');box.textContent='Cargando pedidos...';
- const {data,error}=await client.from('pedidos_clientes').select('id,nombre,email,pais,servicio,detalles,estado,creado_en').order('creado_en',{ascending:false});
+ const {data,error}=await client.from('pedidos_clientes').select('id,nombre,email,pais,servicio,detalles,estado,creado_en,precio_cobrado_cop,pago_confirmado,pago_confirmado_en').order('creado_en',{ascending:false});
  if(error){box.textContent='No fue posible cargar los pedidos.';adminMsg(error.message,true);return}
  if(!data?.length){box.textContent='Todavía no hay pedidos de clientes.';return}
  box.innerHTML='';
@@ -138,30 +138,50 @@ async function loadClientOrders(){
   const meta=document.createElement('div');meta.className='admin-meta';
   meta.textContent=item.email+' · '+item.pais+' · '+new Date(item.creado_en).toLocaleString('es-CO')+' · Estado: '+item.estado;
   const detailsText=item.detalles||'';
-  const packageLine=detailsText.split('\n').find(line=>line.startsWith('Paquete:'))||'Paquete no especificado';
+  const packageLine=detailsText.split('\\n').find(line=>line.startsWith('Paquete:'))||'Paquete no especificado';
   const packageInfo=document.createElement('p');packageInfo.className='small';packageInfo.style.fontWeight='700';packageInfo.textContent=packageLine;
-  const details=document.createElement('p');details.className='small muted';
-  details.textContent=detailsText.replace(/^Paquete:.*?(?:\n\s*\n)?/s,'').replace(/^Detalle del cliente:\s*/,'')||'Sin descripción adicional.';
+  const details=document.createElement('p');details.className='small muted';details.textContent=detailsText.replace(/^Paquete:.*?(?:\\n\\s*\\n)?/s,'').replace(/^Detalle del cliente:\\s*/,'')||'Sin descripción adicional.';
   row.append(title,meta,packageInfo,details);
+  const priceLabel=document.createElement('label');priceLabel.textContent='Precio final acordado (COP)';
+  const price=document.createElement('input');price.type='number';price.min='1';price.step='1';price.inputMode='numeric';price.placeholder='Ej. 50000';price.value=item.precio_cobrado_cop||'';price.style.maxWidth='220px';
+  const paymentStatus=document.createElement('p');paymentStatus.className='small muted';paymentStatus.textContent=item.pago_confirmado?'Pago confirmado'+(item.pago_confirmado_en?' · '+new Date(item.pago_confirmado_en).toLocaleString('es-CO'):''):'Pago pendiente de verificación';
   const actions=document.createElement('div');actions.className='admin-actions';
+  const savePrice=document.createElement('button');savePrice.type='button';savePrice.className='btn secondary';savePrice.textContent='Guardar precio y aceptar';
+  savePrice.onclick=()=>saveOrderPrice(item.id,price.value,savePrice);
+  const paymentLink=document.createElement('button');paymentLink.type='button';paymentLink.className='btn secondary';paymentLink.textContent='Preparar mensaje de pago';
+  paymentLink.onclick=()=>preparePaymentMessage(item,price.value||item.precio_cobrado_cop);
+  const confirmPayment=document.createElement('button');confirmPayment.type='button';confirmPayment.className='btn secondary';confirmPayment.textContent=item.pago_confirmado?'Pago ya confirmado':'Confirmar pago recibido';confirmPayment.disabled=!!item.pago_confirmado;
+  confirmPayment.onclick=()=>confirmOrderPayment(item.id,price.value||item.precio_cobrado_cop,confirmPayment);
+  actions.append(savePrice,paymentLink,confirmPayment);
   const states=[['En revisión','en_revision'],['Aceptar','aceptado'],['Rechazar','rechazado'],['Asignado','asignado'],['En proceso','en_proceso'],['Entregado','entregado']];
-  for(const [label,state] of states){
-   const b=document.createElement('button');b.type='button';b.className='btn secondary';b.textContent=label;
-   b.disabled=item.estado===state;
-   b.onclick=()=>updateClientOrder(item.id,state,b);
-   actions.append(b);
-  }
-  row.append(actions);box.append(row);
+  for(const [label,state] of states){const b=document.createElement('button');b.type='button';b.className='btn secondary';b.textContent=label;b.disabled=item.estado===state;b.onclick=()=>updateClientOrder(item.id,state,b);actions.append(b)}
+  row.append(priceLabel,price,paymentStatus,actions);box.append(row);
  }
 }
-async function updateClientOrder(id,state,b){
- b.disabled=true;
- const {error}=await client.from('pedidos_clientes').update({estado:state}).eq('id',id);
- if(error){adminMsg(error.message,true);b.disabled=false;return}
- adminMsg('Estado del pedido actualizado.');
- await loadClientOrders();
+async function saveOrderPrice(id,value,b){
+ const amount=Number(value);if(!Number.isSafeInteger(amount)||amount<1){adminMsg('Escribe un precio final válido en pesos colombianos.',true);return}
+ b.disabled=true;const {error}=await client.from('pedidos_clientes').update({precio_cobrado_cop:amount,estado:'aceptado'}).eq('id',id);
+ if(error){adminMsg('No se pudo guardar el precio: '+error.message,true);b.disabled=false;return}
+ adminMsg('Precio guardado y pedido aceptado. Ahora puedes preparar las instrucciones de pago.');await loadClientOrders();
 }
-
+function preparePaymentMessage(item,value){
+ const amount=Number(value);if(!Number.isSafeInteger(amount)||amount<1){adminMsg('Primero escribe y guarda el precio final del pedido.',true);return}
+ const text=`Hola ${item.nombre}, tu pedido de ${item.servicio} en NOVA CLUB fue aceptado. Valor a pagar: ${amount.toLocaleString('es-CO')} COP. Puedes realizar el pago por Nequi al número 3233703382. Después envíanos el comprobante por este chat. El pago solo se marcará confirmado cuando NOVA CLUB verifique que el dinero llegó. No realices pagos adicionales.`;
+ const url='https://wa.me/?text='+encodeURIComponent(text);window.open(url,'_blank','noopener');
+ adminMsg('Se abrió WhatsApp con el mensaje preparado. Revísalo y envíalo tú al cliente.');
+}
+async function confirmOrderPayment(id,value,b){
+ const amount=Number(value);if(!Number.isSafeInteger(amount)||amount<1){adminMsg('Primero guarda un precio final válido.',true);return}
+ if(!window.confirm('Confirma solo si verificaste en tu Nequi que recibiste exactamente el pago del cliente. ¿El dinero ya llegó?'))return;
+ b.disabled=true;const {error}=await client.from('pedidos_clientes').update({precio_cobrado_cop:amount,pago_confirmado:true,pago_confirmado_en:new Date().toISOString()}).eq('id',id);
+ if(error){adminMsg('No se pudo confirmar el pago: '+error.message,true);b.disabled=false;return}
+ adminMsg('Pago marcado como confirmado. Recuerda: esto no realiza ninguna transferencia.');await loadClientOrders();
+}
+async function updateClientOrder(id,state,b){
+ b.disabled=true;const {error}=await client.from('pedidos_clientes').update({estado:state}).eq('id',id);
+ if(error){adminMsg(error.message,true);b.disabled=false;return}
+ adminMsg('Estado del pedido actualizado.');await loadClientOrders();
+}
 
 async function loadWorkerApplications(){
  const box=$('workerApplications');box.textContent='Cargando postulaciones...';
