@@ -137,8 +137,12 @@ async function loadClientOrders(){
   const title=document.createElement('strong');title.textContent=item.servicio+' · '+item.nombre;
   const meta=document.createElement('div');meta.className='admin-meta';
   meta.textContent=item.email+' · '+item.pais+' · '+new Date(item.creado_en).toLocaleString('es-CO')+' · Estado: '+item.estado;
-  const details=document.createElement('p');details.className='small muted';details.textContent=item.detalles;
-  row.append(title,meta,details);
+  const detailsText=item.detalles||'';
+  const packageLine=detailsText.split('\n').find(line=>line.startsWith('Paquete:'))||'Paquete no especificado';
+  const packageInfo=document.createElement('p');packageInfo.className='small';packageInfo.style.fontWeight='700';packageInfo.textContent=packageLine;
+  const details=document.createElement('p');details.className='small muted';
+  details.textContent=detailsText.replace(/^Paquete:.*?(?:\n\s*\n)?/s,'').replace(/^Detalle del cliente:\s*/,'')||'Sin descripción adicional.';
+  row.append(title,meta,packageInfo,details);
   const actions=document.createElement('div');actions.className='admin-actions';
   const states=[['En revisión','en_revision'],['Aceptar','aceptado'],['Rechazar','rechazado'],['Asignado','asignado'],['En proceso','en_proceso'],['Entregado','entregado']];
   for(const [label,state] of states){
@@ -215,9 +219,16 @@ function updateServicePackages(){
  if(!service||!options.length){select.disabled=true;select.required=false;select.add(new Option('Primero selecciona un servicio',''));note.textContent='Elige un servicio para consultar sus paquetes y precios.';return}
  select.required=true;select.disabled=false;select.add(new Option('Selecciona un paquete',''));
  options.forEach(([name,price])=>select.add(new Option(price?`${name} — ${cop(price)}`:name,name)));
- note.textContent=packageName==='Cotización personalizada'?'Este servicio requiere una cotización. NOVA CLUB te confirmará el precio antes de iniciar.':'Precio seleccionado: '+cop((options.find(x=>x[0]===select.value)||[null,0])[1])+' · Se confirmará el alcance antes de iniciar.';
+ note.textContent='Selecciona un paquete para ver su precio.';
+}
+function updatePackagePrice(){
+ const service=$('serviceType').value,selected=$('servicePackage').value;
+ const item=(servicePackages[service]||[]).find(x=>x[0]===selected);
+ if(!item){$('packagePriceNote').textContent='Selecciona un paquete para ver su precio.';return}
+ $('packagePriceNote').textContent=item[1]?'Precio de referencia: '+cop(item[1])+' · El valor final se confirma antes de iniciar.':'Este servicio requiere una cotización personalizada.';
 }
 $('serviceType').addEventListener('change',updateServicePackages);
+$('servicePackage').addEventListener('change',updatePackagePrice);
 $('serviceRequest').onsubmit=async e=>{
 e.preventDefault();
 const name=$('clientName').value.trim();
@@ -238,7 +249,7 @@ try{
     nombre:name,email:email,pais:country,servicio:service,detalles:details
   });
   if(error) throw error;
-  const message=`Hola NOVA CLUB. Acabo de enviar una solicitud desde la página.\\nNombre: ${name}\\nCorreo: ${email}\\nPaís: ${country}\\nServicio: ${service}`;
+  const message=`Hola NOVA CLUB. Acabo de enviar una solicitud desde la página.\nNombre: ${name}\nCorreo: ${email}\nPaís: ${country}\nServicio: ${service}\nPaquete: ${packageName}\nPrecio de referencia: ${packagePrice?cop(packagePrice):'Cotización personalizada'}\nDetalle: ${rawDetails}`;
   $('requestMessage').textContent='¡Solicitud registrada! También puedes avisarnos por WhatsApp para conversar sobre el alcance, precio y plazo.';
   $('requestMessage').className='status';$('requestMessage').style.display='block';
   const wa=document.createElement('a');
