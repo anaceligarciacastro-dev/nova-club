@@ -84,7 +84,7 @@ function openAuth(mode){$('auth').classList.remove('hidden');$('auth').scrollInt
 // Los botones data-auth se gestionan en el controlador único de navegación.
 $('closeAuth').addEventListener('click',()=>{$('auth').classList.add('hidden');$('inicio').scrollIntoView({behavior:'smooth'})});
 // Los accesos a servicios se gestionan en el controlador único de navegación.
-$('mobileMenu').addEventListener('click',()=>document.querySelector('.main-nav').classList.toggle('open'));
+const mobileMenuButton=$('mobileMenu');if(mobileMenuButton){mobileMenuButton.addEventListener('click',()=>{const nav=document.querySelector('.main-nav');if(nav)nav.classList.toggle('open')})}
 document.querySelectorAll('.main-nav a').forEach(a=>a.addEventListener('click',()=>document.querySelector('.main-nav').classList.remove('open')));
 
 
