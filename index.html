@@ -215,20 +215,28 @@ try{
 $('refreshAdmin').onclick=async()=>{await loadClientOrders();await loadWorkerApplications();await loadAdminRequests()};$('logout').onclick=async()=>{currentUser=null;await client.auth.signOut();$('account').classList.add('hidden');$('adminPanel').classList.add('hidden');$('auth').classList.remove('hidden')};
 (async()=>{
   if(!configured || !client){msg('La conexión de cuentas de NOVA CLUB no está configurada.',true);return;}
-  client.auth.onAuthStateChange((_event,session)=>{
-    currentUser=session?.user||null;
-    if(session && session.user){loadAccount(session.user).catch(err=>msg('No se pudo cargar tu perfil: '+(err.message||'error inesperado'),true,'accountMessage'));}
-    else{
-      $('account').classList.add('hidden');
-      $('adminPanel').classList.add('hidden');
-      $('auth').classList.remove('hidden');
-    }
-  });
+  // Primero recuperar la sesión persistida y SOLO después escuchar cambios.
+  // Así evitamos que INITIAL_SESSION vacío sobrescriba una sesión válida en Safari/iPhone.
   try{
     const {data,error}=await client.auth.getSession();
     if(error) throw error;
-    if(data.session && data.session.user) await loadAccount(data.session.user);
+    const initialSession=data?.session||null;
+    currentUser=initialSession?.user||null;
+    if(initialSession?.user) await loadAccount(initialSession.user);
+    else { $('account').classList.add('hidden'); $('adminPanel').classList.add('hidden'); $('auth').classList.remove('hidden'); }
   }catch(err){msg('No pudimos comprobar la sesión: '+(err.message||'intenta recargar la página.'),true);}
+  client.auth.onAuthStateChange((event,session)=>{
+    // INITIAL_SESSION ya se resolvió arriba. No dejar que una notificación inicial tardía
+    // o vacía borre el usuario que acabamos de recuperar.
+    if(event==='INITIAL_SESSION') return;
+    if(session?.user){
+      currentUser=session.user;
+      loadAccount(session.user).catch(err=>msg('No se pudo cargar tu perfil: '+(err.message||'error inesperado'),true,'accountMessage'));
+    }else if(event==='SIGNED_OUT'){
+      currentUser=null;
+      $('account').classList.add('hidden'); $('adminPanel').classList.add('hidden'); $('auth').classList.remove('hidden');
+    }
+  });
 })();
 </script>
 <script>
@@ -288,11 +296,23 @@ document.querySelectorAll('[data-tab]').forEach(button=>{
 });
 document.querySelectorAll('[data-go]').forEach(button=>button.addEventListener('click',()=>showScreen(button.dataset.go)));
 // Los botones de acceso abren la pantalla de cuenta y cambian el modo del formulario.
-document.querySelectorAll('[data-auth]').forEach(button=>button.addEventListener('click',()=>{
+document.querySelectorAll('[data-auth]').forEach(button=>button.addEventListener('click',async()=>{
   showScreen('account');
-  document.getElementById('auth').classList.remove('hidden');
-  document.getElementById('account').classList.add('hidden');
-  setMode(button.dataset.auth);
+  // Si ya existe una sesión, mostrar el perfil; no forzar el formulario de acceso.
+  if(currentUser){
+    document.getElementById('auth').classList.add('hidden');
+    document.getElementById('account').classList.remove('hidden');
+    return;
+  }
+  try{
+    const {data,error}=await client.auth.getSession();
+    if(error) throw error;
+    if(data?.session?.user){ currentUser=data.session.user; await loadAccount(currentUser); }
+    else { document.getElementById('auth').classList.remove('hidden'); document.getElementById('account').classList.add('hidden'); setMode(button.dataset.auth); }
+  }catch(error){
+    document.getElementById('auth').classList.remove('hidden');
+    msg('No pudimos recuperar tu sesión: '+(error.message||'intenta iniciar sesión nuevamente.'),true);
+  }
 }));
 document.querySelectorAll('.service-cta').forEach(button=>button.addEventListener('click',()=>{
   const serviceType = document.getElementById('serviceType');
