@@ -84,17 +84,17 @@ body{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;margin:0}
 <div class="card" id="workerApplyCard"><h2>Quiero trabajar en NOVA CLUB</h2><p class="muted">Cuéntanos qué sabes hacer. Tu postulación será revisada por el equipo de NOVA CLUB; enviarla no garantiza una contratación ni un pago.</p><form id="workerApplyForm"><label for="workerName">Nombre completo</label><input id="workerName" maxlength="100" placeholder="Tu nombre completo" required=""/><label for="workerCountry">País</label><input id="workerCountry" maxlength="80" placeholder="País donde vives" required=""/><label for="workerPhone">WhatsApp (con código de país)</label><input id="workerPhone" maxlength="30" placeholder="Ej. +57 300 000 0000"/><label for="workerSkills">¿Qué tareas puedes realizar?</label><textarea id="workerSkills" maxlength="1200" placeholder="Ej. organizar catálogos, registrar datos, ordenar fotografías, manejar hojas de cálculo..." required=""></textarea><label for="workerExperience">Experiencia (opcional)</label><textarea id="workerExperience" maxlength="1000" placeholder="Cuéntanos si ya has realizado trabajos similares."></textarea><button class="btn" id="workerApplySubmit" type="submit">Enviar postulación</button></form><div class="status" id="workerApplyMessage" role="status"></div></div>
 <div class="status" id="accountMessage" role="status"></div><section class="card hidden" id="adminPanel"><div class="actions" style="justify-content:space-between;align-items:center"><h2>Administración privada</h2><button class="btn secondary" id="refreshAdmin" type="button">Actualizar</button></div><p class="small muted">Solo visible para la cuenta autorizada. Revisa cada solicitud antes de decidir.</p><div class="status" id="adminMessage" role="status"></div><h3>Pedidos de clientes</h3><p class="small muted">Solicitudes recibidas desde el formulario público.</p><div id="clientOrders"><p class="muted">Los pedidos aparecerán aquí.</p></div><h3>Postulaciones para trabajar</h3><p class="small muted">Personas que desean colaborar con NOVA CLUB.</p><div id="workerApplications"><p class="muted">Cargando postulaciones...</p></div><h3>Solicitudes de participantes</h3><div id="adminRequests"><p class="muted">Comprobando permisos...</p></div></section></section></section><section class="app-screen" id="screen-bank">
 <div class="bank-head"><div><div class="bank-kicker">TU DINERO, BAJO CONTROL</div><div class="screen-heading">Mi banco</div><p class="screen-intro">Consulta tus ingresos, retiros y movimientos de NOVA CLUB.</p></div><span class="bank-emblem">$</span></div>
-<section class="card bank-balance"><div class="bank-balance-top"><span>Saldo disponible</span><span class="bank-secure">● Datos de Supabase</span></div><div class="bank-amount" id="bankBalance">— <small>COP</small></div><p class="bank-balance-note">Calculado con movimientos registrados en tu cuenta.</p><div class="bank-balance-foot"><span>billetera NOVA CLUB</span><span>Saldo en COP</span></div></section>
-<div class="bank-summary-grid"><article class="bank-summary-card"><span class="bank-summary-icon">↙</span><span class="bank-summary-label">Ingresos</span><strong id="bankIncome">—</strong><small>Movimientos confirmados</small></article><article class="bank-summary-card"><span class="bank-summary-icon">↗</span><span class="bank-summary-label">Retiros</span><strong id="bankWithdrawals">—</strong><small>Movimientos registrados</small></article></div>
-<section class="card bank-section"><div class="bank-section-title"><h2>Últimos movimientos</h2><span>ACTIVIDAD</span></div><div id="bankMovements" class="bank-empty"><span class="bank-empty-icon">↔</span><strong>Inicia sesión para consultar tus movimientos</strong><p class="small muted">Aquí aparecerán los ingresos, retiros y ajustes registrados en tu cuenta.</p></div></section>
-<section class="card bank-section"><div class="bank-section-title"><h2>Solicitudes de retiro</h2><span>RETIROS</span></div><div id="bankRequests" class="bank-empty"><p class="small muted">Inicia sesión para consultar tus solicitudes.</p></div><button class="bank-withdraw" type="button" disabled>Solicitar retiro <span>En preparación segura</span></button></section>
+<section class="card bank-balance"><div class="bank-balance-top"><span>Saldo disponible</span><span class="bank-secure">● Cuenta segura</span></div><div class="bank-amount">$ 0 <small>COP</small></div><p class="bank-balance-note">Tu saldo se actualizará con movimientos confirmados.</p><div class="bank-balance-foot"><span> billetera NOVA CLUB</span><span>•••• 2026</span></div></section>
+<div class="bank-summary-grid"><article class="bank-summary-card"><span class="bank-summary-icon">↙</span><span class="bank-summary-label">Ingresos</span><strong>—</strong><small>Confirmados</small></article><article class="bank-summary-card"><span class="bank-summary-icon">↗</span><span class="bank-summary-label">Retiros</span><strong>—</strong><small>Realizados</small></article></div>
+<section class="card bank-section"><div class="bank-section-title"><h2>Últimos movimientos</h2><span>ACTIVIDAD</span></div><div id="bankMovements" class="bank-empty"><span class="bank-empty-icon">↔</span><strong>Aún no tienes movimientos</strong><p class="small muted">Cuando recibas un ingreso o se confirme un retiro, aparecerá aquí.</p></div></section>
+<section class="card bank-section"><div class="bank-section-title"><h2>Solicitudes de retiro</h2><span>RETIROS</span></div><p class="muted small">Podrás consultar aquí tus solicitudes y su estado: pendiente, aprobada o pagada.</p><button class="bank-withdraw" type="button" disabled>Solicitar retiro <span>Próximamente</span></button></section>
 <section class="card bank-section bank-nequi"><div class="bank-nequi-icon">N</div><div><strong>Cuenta para recibir pagos</strong><p class="small muted">La vinculación de Nequi estará disponible cuando se habiliten los retiros seguros.</p></div></section>
 <div class="notice bank-notice">Por ahora esta billetera es informativa. No se realizan transferencias ni se muestran ganancias hasta que cada movimiento haya sido verificado.</div><div class="status" id="bankMessage" role="status"></div></section></main><nav aria-label="Navegación principal" class="bottom-nav"><button class="bottom-item selected" data-tab="home"><span class="bottom-icon">⌂</span><small>Inicio</small></button><button class="bottom-item" data-tab="orders"><span class="bottom-icon">▣</span><small>Pedidos</small></button><button class="bottom-item" data-tab="support"><span class="bottom-icon">＋</span><small>Pedir</small></button><button class="bottom-item" data-tab="services"><span class="bottom-icon">◉</span><small>Servicios</small></button><button class="bottom-item" data-tab="account"><span class="bottom-icon">♙</span><small>Mi cuenta</small></button><button class="bottom-item" data-tab="bank"><span class="bottom-icon">▣</span><small>Mi banco</small></button></nav>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // Inserta aquí la clave PUBLICABLE sb_publishable_... de Supabase. Nunca uses la clave secreta/service_role.
 
-const SUPABASE_URL='https://zhbrbtggshlaxzpkhral.supabase.co';const SUPABASE_PUBLISHABLE_KEY='sb_publishable_DjnpNSclWChfSYh6U9B6hQ_LIhpXKzt';const configured=SUPABASE_PUBLISHABLE_KEY.startsWith('sb_publishable_');const client=configured?window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY):null;const $=id=>document.getElementById(id);let mode='login';let currentUser=null;
+const SUPABASE_URL='https://zhbrbtggshlaxzpkhral.supabase.co';const SUPABASE_PUBLISHABLE_KEY='sb_publishable_DjnpNSclWChfSYh6U9B6hQ_LIhpXKzt';const configured=SUPABASE_PUBLISHABLE_KEY.startsWith('sb_publishable_');const client=configured?window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY):null;const $=id=>document.getElementById(id);let mode='login';let currentUser=null;let isApprovedWorker=false;let isAdminUser=false;
 function msg(t,err=false,where='message'){let e=$(where);e.textContent=t;e.className='status'+(err?' error':'');e.style.display='block'}function setMode(m){mode=m;$('nameWrap').classList.toggle('hidden',m!=='signup');$('submitAuth').textContent=m==='signup'?'Crear cuenta':'Iniciar sesión';$('showLogin').className=m==='login'?'btn':'btn secondary';$('showSignup').className=m==='signup'?'btn':'btn secondary';$('message').style.display='none'}$('showLogin').onclick=()=>setMode('login');$('showSignup').onclick=()=>setMode('signup');
 // Navegación de la portada y accesos del encabezado
 function openAuth(mode){$('auth').classList.remove('hidden');$('auth').scrollIntoView({behavior:'smooth',block:'start'});setMode(mode)}
@@ -124,7 +124,7 @@ async function loadAccount(user){
   }
 }
 async function loadTasks(){let box=$('tasks');box.textContent='Cargando actividades...';let {data,error}=await client.from('actividades').select('id,titulo,descripcion,recompensa_cop').eq('activa',true).order('creada_en',{ascending:false});if(error){box.textContent='No pudimos cargar las actividades. Intenta nuevamente.';return}if(!data?.length){box.textContent='Todavía no hay actividades disponibles. Cuando NOVA CLUB publique trabajos reales financiados por clientes, aparecerán aquí.';return}box.innerHTML='';for(let t of data){let a=document.createElement('article');a.className='card task';let d=document.createElement('div'),h=document.createElement('h3'),p=document.createElement('p');h.textContent=t.titulo;p.className='small muted';p.textContent=t.descripcion||'Consulta las instrucciones antes de participar.';d.append(h,p);let r=document.createElement('div'),v=document.createElement('div'),b=document.createElement('button');v.className='reward';v.textContent=Number(t.recompensa_cop||0).toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});b.className='btn secondary';b.textContent='Enviar interés';b.onclick=()=>submitTask(t.id,b);r.append(v,b);a.append(d,r);box.append(a)}}
-async function submitTask(id,b){b.disabled=true;try{let {data:{user}}=await client.auth.getUser();let {error}=await client.from('entregas').insert({usuario_id:user.id,actividad_id:id,estado:'pendiente'});if(error)throw error;msg('Tu solicitud quedó registrada para revisión. No genera un pago automático.',false,'accountMessage');b.textContent='Solicitud enviada'}catch(e){msg(e.message||'No se pudo enviar la solicitud.',true,'accountMessage');b.disabled=false}}async function checkAdmin(){const panel=$('adminPanel');panel.classList.add('hidden');const {data,error}=await client.rpc('es_administrador');if(error){adminMsg('No se pudo verificar el permiso de administrador: '+(error.message||'error de Supabase'),true);return}if(data!==true){adminMsg('La sesión está activa, pero esta cuenta no tiene permisos de administrador.',true);return}panel.classList.remove('hidden');await loadClientOrders();await loadWorkerApplications();await loadAdminRequests()}
+async function submitTask(id,b){b.disabled=true;try{let {data:{user}}=await client.auth.getUser();let {error}=await client.from('entregas').insert({usuario_id:user.id,actividad_id:id,estado:'pendiente'});if(error)throw error;msg('Tu solicitud quedó registrada para revisión. No genera un pago automático.',false,'accountMessage');b.textContent='Solicitud enviada'}catch(e){msg(e.message||'No se pudo enviar la solicitud.',true,'accountMessage');b.disabled=false}}async function checkAdmin(){const panel=$('adminPanel');panel.classList.add('hidden');const {data,error}=await client.rpc('es_administrador');if(error){adminMsg('No se pudo verificar el permiso de administrador: '+(error.message||'error de Supabase'),true);return}if(data!==true){isAdminUser=false;updateRoleAccess();adminMsg('La sesión está activa, pero esta cuenta no tiene permisos de administrador.',true);return}isAdminUser=true;updateRoleAccess();panel.classList.remove('hidden');await loadClientOrders();await loadWorkerApplications();await loadAdminRequests()}
 
 async function loadClientOrders(){
  const box=$('clientOrders');box.textContent='Cargando pedidos...';
@@ -202,13 +202,22 @@ async function loadWorkerApplications(){
  }
 }
 async function updateWorkerApplication(id,state,b){b.disabled=true;const {error}=await client.from('postulaciones_trabajadores').update({estado:state}).eq('id',id);if(error){adminMsg(error.message,true);b.disabled=false;return}adminMsg('Postulación actualizada.');await loadWorkerApplications()}
+function updateRoleAccess(){
+ const bankButton=document.querySelector('[data-tab="bank"]');
+ const canSeeBank=!!(isAdminUser||isApprovedWorker);
+ if(bankButton) bankButton.classList.toggle('hidden',!canSeeBank);
+ const bankScreen=$('screen-bank');
+ if(bankScreen && !canSeeBank && bankScreen.classList.contains('active-screen')) showScreen('home');
+}
 async function loadMyWorkerApplication(){
  const {data:{user}}=await client.auth.getUser();
  if(!user)return;
  $('workerName').value=user.user_metadata?.nombre||'';
  $('profileEmail').textContent=user.email||'';
  const {data,error}=await client.from('postulaciones_trabajadores').select('estado').eq('usuario_id',user.id).maybeSingle();
- if(error){$('workerApplyMessage').textContent='No pudimos consultar tu postulación.';$('workerApplyMessage').className='status error';$('workerApplyMessage').style.display='block';return}
+ if(error){isApprovedWorker=false;updateRoleAccess();$('workerApplyMessage').textContent='No pudimos consultar tu postulación.';$('workerApplyMessage').className='status error';$('workerApplyMessage').style.display='block';return}
+ isApprovedWorker=!!(data && data.estado==='aprobada');
+ updateRoleAccess();
  if(data){$('workerApplySubmit').disabled=true;$('workerApplySubmit').textContent='Postulación enviada';$('workerApplyMessage').textContent='Tu postulación está registrada. Estado: '+data.estado+'.';$('workerApplyMessage').className='status';$('workerApplyMessage').style.display='block'}
 }
 $('workerApplyForm').onsubmit=async e=>{
@@ -284,7 +293,7 @@ try{
   $('requestMessage').className='status error';$('requestMessage').style.display='block';
 }finally{submit.disabled=false}
 }
-$('refreshAdmin').onclick=async()=>{await loadClientOrders();await loadWorkerApplications();await loadAdminRequests()};$('logout').onclick=async()=>{currentUser=null;await client.auth.signOut();$('account').classList.add('hidden');$('adminPanel').classList.add('hidden');$('auth').classList.remove('hidden')};
+$('refreshAdmin').onclick=async()=>{await loadClientOrders();await loadWorkerApplications();await loadAdminRequests()};$('logout').onclick=async()=>{currentUser=null;isApprovedWorker=false;isAdminUser=false;updateRoleAccess();await client.auth.signOut();$('account').classList.add('hidden');$('adminPanel').classList.add('hidden');$('auth').classList.remove('hidden');showScreen('home')};
 (async()=>{
   if(!configured || !client){msg('La conexión de cuentas de NOVA CLUB no está configurada.',true);return;}
   // Primero recuperar la sesión persistida y SOLO después escuchar cambios.
@@ -305,7 +314,7 @@ $('refreshAdmin').onclick=async()=>{await loadClientOrders();await loadWorkerApp
       currentUser=session.user;
       loadAccount(session.user).catch(err=>msg('No se pudo cargar tu perfil: '+(err.message||'error inesperado'),true,'accountMessage'));
     }else if(event==='SIGNED_OUT'){
-      currentUser=null;
+      currentUser=null;isApprovedWorker=false;isAdminUser=false;updateRoleAccess();
       $('account').classList.add('hidden'); $('adminPanel').classList.add('hidden'); $('auth').classList.remove('hidden');
     }
   });
@@ -320,75 +329,6 @@ function showScreen(name){
   document.querySelectorAll('.bottom-item').forEach(button=>{
     button.classList.toggle('selected', button.dataset.tab === name);
   });
-  if(name === 'bank') loadBankData();
-}
-
-function formatCOP(value){
-  return Number(value||0).toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});
-}
-function bankNotice(message,isError=false){
-  const el=$('bankMessage'); if(!el)return;
-  el.textContent=message; el.className='status'+(isError?' error':''); el.style.display='block';
-}
-async function loadBankData(){
-  const box=$('bankMovements'), requests=$('bankRequests');
-  if(!client || !currentUser){
-    $('bankBalance').innerHTML='— <small>COP</small>';
-    $('bankIncome').textContent='—'; $('bankWithdrawals').textContent='—';
-    if(box) box.innerHTML='<strong>Inicia sesión para consultar tus movimientos</strong><p class="small muted">Tus datos financieros son privados.</p>';
-    if(requests) requests.textContent='Inicia sesión para consultar tus solicitudes.';
-    return;
-  }
-  if(box) box.textContent='Consultando movimientos...';
-  if(requests) requests.textContent='Consultando solicitudes...';
-  try{
-    const [movementResult,withdrawalResult]=await Promise.all([
-      client.from('movimientos').select('id,tipo,monto_cop,descripcion,creado_en').eq('usuario_id',currentUser.id).order('creado_en',{ascending:false}).limit(50),
-      client.from('retiros').select('id,monto_cop,medio,estado,solicitado_en').eq('usuario_id',currentUser.id).order('solicitado_en',{ascending:false}).limit(30)
-    ]);
-    if(movementResult.error) throw new Error('Movimientos: '+movementResult.error.message);
-    if(withdrawalResult.error) throw new Error('Retiros: '+withdrawalResult.error.message);
-    const movements=movementResult.data||[], withdrawals=withdrawalResult.data||[];
-    const income=movements.filter(x=>x.tipo==='ganancia').reduce((a,x)=>a+Number(x.monto_cop||0),0);
-    const withdrawn=movements.filter(x=>x.tipo==='retiro').reduce((a,x)=>a+Number(x.monto_cop||0),0);
-    // Los ajustes se muestran en el historial, pero no se suman hasta definir su signo contable.
-    const balance=income-withdrawn;
-    $('bankBalance').innerHTML=formatCOP(balance)+' <small>COP</small>';
-    $('bankIncome').textContent=formatCOP(income);
-    $('bankWithdrawals').textContent=formatCOP(withdrawn);
-    if(box){
-      box.innerHTML='';
-      if(!movements.length){box.className='bank-empty';box.innerHTML='<span class="bank-empty-icon">↔</span><strong>Aún no tienes movimientos</strong><p class="small muted">Cuando exista un movimiento confirmado, aparecerá aquí.</p>';}
-      else{
-        box.className='';
-        movements.forEach(item=>{
-          const row=document.createElement('article'); row.className='admin-row';
-          const title=document.createElement('strong'); title.textContent=(item.tipo||'Movimiento').replace(/^./,c=>c.toUpperCase());
-          const detail=document.createElement('p'); detail.className='small muted'; detail.textContent=(item.descripcion||'Movimiento de NOVA CLUB')+' · '+(item.creado_en?new Date(item.creado_en).toLocaleString('es-CO'):'');
-          const amount=document.createElement('strong'); amount.textContent=(item.tipo==='retiro'?'−':item.tipo==='ajuste'?'±':'+')+formatCOP(item.monto_cop);
-          row.append(title,detail,amount); box.append(row);
-        });
-      }
-    }
-    if(requests){
-      requests.innerHTML='';
-      if(!withdrawals.length){requests.className='bank-empty';requests.textContent='Aún no tienes solicitudes de retiro.';}
-      else{
-        requests.className='';
-        withdrawals.forEach(item=>{
-          const row=document.createElement('article');row.className='admin-row';
-          const title=document.createElement('strong');title.textContent=formatCOP(item.monto_cop);
-          const detail=document.createElement('p');detail.className='small muted';detail.textContent=(item.medio||'Medio no especificado')+' · Estado: '+item.estado+' · '+(item.solicitado_en?new Date(item.solicitado_en).toLocaleString('es-CO'):'');
-          row.append(title,detail);requests.append(row);
-        });
-      }
-    }
-    bankNotice('Información cargada desde tus registros de Supabase. El saldo no representa dinero transferido a Nequi.');
-  }catch(error){
-    if(box) box.textContent='No fue posible cargar tus movimientos.';
-    if(requests) requests.textContent='No fue posible cargar tus solicitudes.';
-    bankNotice(error.message||'Error al consultar Mi banco.',true);
-  }
 }
 
 async function openAccountScreen(){
@@ -432,6 +372,7 @@ document.querySelectorAll('[data-tab]').forEach(button=>{
   button.addEventListener('click', ()=>{
     const tab = button.dataset.tab;
     if (tab === 'account') { openAccountScreen(); return; }
+    if (tab === 'bank' && !(isAdminUser || isApprovedWorker)) { showScreen('home'); return; }
     showScreen(tab);
   });
 });
